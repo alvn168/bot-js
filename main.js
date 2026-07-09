@@ -1,5 +1,6 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const anime = require('./anime.js');
 
 // Create a new client instance
 const client = new Client({
@@ -25,13 +26,27 @@ client.on('qr', (qr) => {
 });
 
 // Listening to all incoming messages
-client.on('message_create', message => {
+client.on('message_create', async (msg) => {
 
     // bikin logika simple
 
-    if (message.body == "!ping") {
-        client.sendMessage(message.from, 'pong');
+    if (msg.body == "!ping") {
+        msg.reply('pong');
 
+    }
+
+    if (msg.body.startsWith('!anime ')) {
+        const query = msg.body.slice(7).trim(); //ambil judul anime dengan cara di slice atau potong dari index 7
+        const animeInfo = await anime.searchAnime(query);
+        if (animeInfo) {
+            msg.reply(`Title: ${animeInfo.title}\nSynopsis: ${animeInfo.synopsis}\nURL: ${animeInfo.url}\nImage: ${animeInfo.imageUrl}`);
+        } else {
+            msg.reply('Anime not found.');
+        }
+    }
+
+    if (msg.body.startsWith('!anime ')) {
+        console.log(msg.body);
     }
 });
 
