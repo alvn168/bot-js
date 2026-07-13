@@ -52,6 +52,24 @@ client.on("message_create", async (msg) => {
 
   const command = msg.body.trim().split(/\s+/)[0].toLowerCase();
 
+  if (command === "!help") {
+    await msg.reply(
+      `*Menu Bantuan*
+
+• !ping
+  Mengecek apakah bot aktif.
+
+• !anime <judul>
+  Mencari informasi anime.
+  Contoh: !anime Naruto
+
+• !sticker / !s
+  Membuat stiker dari gambar atau video.
+  Kirim media dengan caption !sticker atau !s,
+  atau reply media dengan command tersebut.`,
+    );
+  }
+
   if (command === "!sticker" || command === "!s") {
     await stiker.createSticker(client, msg);
   }
